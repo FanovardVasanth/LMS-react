@@ -40,6 +40,29 @@ const [submitted , setSubmitted] = React.useState(false)
       };
     });
   };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+      if (
+        e.key === 'F12' ||
+        e.key === 'Escape' ||
+        e.key === 'F5' ||
+        e.key === 'ContextMenu' ||
+        e.key === 'F11'
+      ) {
+        console.log('haiii')
+        e.preventDefault();
+        return false;
+      } else if (e.ctrlKey && e.shiftKey && e.key === 'i') {
+        e.preventDefault();
+        return false;
+      }
+    
+  };
+  
+  window.addEventListener("keydown", handleKeyDown);
+  
+  
+  
   
   const handleSubmit = () =>{
     handleClose();
