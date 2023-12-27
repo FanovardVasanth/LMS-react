@@ -115,7 +115,7 @@ const Quiz: React.FC<QuizProps> = ({
         <div>
       {currentQuiz && (
         <div>
-          <h3>{currentQuiz.question}</h3>
+          <p style={{fontSize:'15px',fontWeight:'300'}}>{currentQuiz.question}</p>
           <form>
             {currentQuiz.options.map((option, index) => (
               <div key={index} style={{marginBlock:'15px'}}>
@@ -160,7 +160,7 @@ const Quiz: React.FC<QuizProps> = ({
         <div>
       {currentQuiz && (
         <div>
-          <h3>{currentQuiz.question}</h3>
+          <p style={{fontSize:'20px',fontWeight:'400'}}>{currentQuiz.question}</p>
           <form>
             {currentQuiz.options.map((option, index) => (
               <div key={index} style={{marginBlock:'15px'}}>

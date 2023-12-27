@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer'
 interface CountdownProps {
   setSubmitted: React.Dispatch<React.SetStateAction<boolean>>;
   
@@ -49,21 +50,36 @@ const Countdown: React.FC<CountdownProps> = ({ setSubmitted }) => {
     return () => clearInterval(timer);
   }, [targetTime, setSubmitted]);
 
+  const hours = 2; // Change this value to the number of hours you want to convert
+  const seconds = hours * 3600; 
+
   return (
-    <div style={{display:'flex',justifyContent:'space-between',marginInline:'60px',marginTop:'30px'}}>
-        <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <h1 style={{border:'1px solid',marginBlock:'0px',paddingInline:'15px'}}>{time.hours}</h1>
-            <p>Hours</p>
+    <div style={{display:'flex',justifyContent:'center',marginTop:'30px'}}>
+        <div>
+      <CountdownCircleTimer
+        isPlaying
+        duration={seconds}
+        colors={['#0288d1', '#f00']}
+        colorsTime={[seconds,30]}
+      >
+        {() => (
+        <div style={{display:'flex',flexDirection:'row'}}>
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
+            <h3 style={{marginBlock:'0px',paddingInline:'10px'}}>{time.hours}</h3>
+            <p style={{fontSize:'10px'}}>Hours</p>
         </div>
         <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <h1 style={{border:'1px solid',marginBlock:'0px',paddingInline:'15px'}}>{time.minutes}</h1>
-            <p>Minutes</p>
+            <h3 style={{marginBlock:'0px',paddingInline:'10px'}}>{time.minutes}</h3>
+            <p style={{fontSize:'10px'}}>Minutes</p>
         </div>
         <div style={{display:'flex',flexDirection:'column',alignItems:'center'}}>
-            <h1 style={{border:'1px solid',marginBlock:'0px',paddingInline:'15px'}}>{time.seconds}</h1>
-            <p>Seconds</p>
+            <h3 style={{marginBlock:'0px',paddingInline:'10px'}}>{time.seconds}</h3>
+            <p style={{fontSize:'10px'}}>Seconds</p>
         </div>
-        
+        </div>
+        )}
+      </CountdownCircleTimer>
+    </div>
       </div>
   );
 };

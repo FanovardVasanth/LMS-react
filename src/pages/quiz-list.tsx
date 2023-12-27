@@ -1,16 +1,25 @@
 import { Card } from "@mui/material";
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
-import React,{useState,useEffect} from "react";
-import FileCopyIcon from '@mui/icons-material/FileCopy';
-import TimerIcon from '@mui/icons-material/Timer';
+import React,{} from "react";
 import TimerDial from '../assets/icons/timerIcon.png'
+import GreenTimer from '../assets/icons/timer-green.png'
 import TranslateIcon from '@mui/icons-material/Translate';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import PeopleIcon from '@mui/icons-material/People';
 import EventIcon from '@mui/icons-material/Event';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormControl from '@mui/material/FormControl';
+import SearchIcon from '@mui/icons-material/Search';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import Pagination from '@mui/material/Pagination';
+
 const Quizlist: React.FC = () => {
     const imageURL = 'https://t3.ftcdn.net/jpg/03/45/97/36/360_F_345973621_sMifpCogXNoIDjmXlbLwx1QZA5ZmQVl8.jpg'
     const quizList = [
@@ -20,8 +29,9 @@ const Quizlist: React.FC = () => {
           duration: '40 mins',
           formattedDate: '12 Mar 2023',
           numberOfQuestions: 20,
-          language: 'English',
+          language: 'en',
           likes: 50,
+          reattempt:false,
           userCount: 1000,
         },
         {
@@ -30,8 +40,9 @@ const Quizlist: React.FC = () => {
           duration: '25 mins',
           formattedDate: '21 Apr 2023',
           numberOfQuestions: 15,
-          language: 'German',
+          language: 'fr',
           likes: 30,
+          reattempt:false,
           userCount: 750,
         },
         {
@@ -40,8 +51,9 @@ const Quizlist: React.FC = () => {
           duration: '50 mins',
           formattedDate: '05 May 2023',
           numberOfQuestions: 25,
-          language: 'Spanish',
+          language: 'en',
           likes: 40,
+          reattempt:true,
           userCount: 900,
         },
         {
@@ -50,8 +62,9 @@ const Quizlist: React.FC = () => {
           duration: '60 mins',
           formattedDate: '15 Jul 2023',
           numberOfQuestions: 30,
-          language: 'Python',
+          language: 'en',
           likes: 35,
+          reattempt:false,
           userCount: 800,
         },
         {
@@ -60,8 +73,9 @@ const Quizlist: React.FC = () => {
           duration: '35 mins',
           formattedDate: '20 Aug 2023',
           numberOfQuestions: 18,
-          language: 'French',
+          language: 'fr',
           likes: 25,
+          reattempt:true,
           userCount: 600,
         },
         {
@@ -70,8 +84,9 @@ const Quizlist: React.FC = () => {
           duration: '45 mins',
           formattedDate: '25 Sep 2023',
           numberOfQuestions: 22,
-          language: 'English',
+          language: 'en',
           likes: 60,
+          reattempt:false,
           userCount: 1200,
         },
         {
@@ -80,8 +95,9 @@ const Quizlist: React.FC = () => {
           duration: '55 mins',
           formattedDate: '10 Oct 2023',
           numberOfQuestions: 24,
-          language: 'Spanish',
+          language: 'en',
           likes: 20,
+          reattempt:false,
           userCount: 500,
         },
         {
@@ -90,8 +106,9 @@ const Quizlist: React.FC = () => {
           duration: '30 mins',
           formattedDate: '18 Nov 2023',
           numberOfQuestions: 16,
-          language: 'English',
+          language: 'en',
           likes: 45,
+          reattempt:false,
           userCount: 950,
         },
         {
@@ -100,8 +117,9 @@ const Quizlist: React.FC = () => {
           duration: '20 mins',
           formattedDate: '05 Dec 2023',
           numberOfQuestions: 12,
-          language: 'German',
+          language: 'fr',
           likes: 70,
+          reattempt:false,
           userCount: 1400,
         },
         {
@@ -110,15 +128,43 @@ const Quizlist: React.FC = () => {
           duration: '75 mins',
           formattedDate: '20 Dec 2023',
           numberOfQuestions: 35,
-          language: 'English',
+          language: 'en',
           likes: 75,
+          reattempt:false,
           userCount: 1500,
         },
       ];
       
+      const sortByOptions = [
+        { label: 'Name', value: 'name' },
+        { label: 'Latest', value: 'date' },
+        { label: 'Popularity', value: 'popularity' },
+        { label: 'Rating', value: 'rating' },
+        { label: 'Price', value: 'price' },
+      ];
+      const defaultOption = sortByOptions[0].value;
       
+      const quizCategories = [
+        { value :'allCategories', label:'All Categories'},
+        { value: 'math', label: 'Mathematics' },
+        { value: 'science', label: 'Science' },
+        { value: 'history', label: 'History' },
+        { value: 'language', label: 'Language Arts' },
+        { value: 'programming', label: 'Programming' },
       
-      
+      ];
+      const defaultCategory = quizCategories[0].value
+
+      const ratingOptions = [
+        { value: '5', label: '5 Stars' },
+        { value: '4', label: '4 Stars' },
+        { value: '3', label: '3 Stars' },
+        { value: '2', label: '2 Stars' },
+        { value: '1', label: '1 Star' },
+        // You can add more rating options if needed
+      ];
+
+      const defaultRating = ratingOptions[0].value
 
       const openQuizWindow = (quizId: any) => {
         const screenWidth = window.screen.width;
@@ -144,12 +190,81 @@ return(
       <div style={{display:'flex',flexWrap:'wrap',justifyContent:'space-between',width:'75%'}}>
       <div style={{paddingTop:'2%',display:'flex',justifyContent:'space-between',width:'100%'}}>
             <h1 style={{marginBlock:'0px'}}>Quizzes</h1>
-            <Button style={{backgroundColor:'#0077cc',borderRadius:'25px'}} variant="contained">Back</Button>
+            <Button style={{backgroundColor:'#0077cc',borderRadius:'25px'}} startIcon={<ArrowBackIcon />} variant="contained">Back</Button>
       </div>
+      <div style={{width:'100%',paddingTop:'2%',display:'flex',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+
+            <div style={{width:'30%'}}>
+            <FormControl fullWidth >
+      <InputLabel htmlFor="outlined-adornment-amount">Search</InputLabel>
+      <OutlinedInput
+        id="outlined-adornment-amount"
+        startAdornment={<InputAdornment position="start"><SearchIcon/></InputAdornment>}
+        label="Amount"
+        placeholder="Search in your Quizzes"
+      />
+    </FormControl>
+            </div>
+            
+            
+      <div style={{width:'20%'}}>
+      <TextField
+      id="outlined-select-currency"
+      select
+      label="Sort by" // Change the label here
+      defaultValue={defaultOption}
+      fullWidth
+    >
+      {sortByOptions.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+      </div>
+      
+      <div style={{width:'20%'}}>
+      <TextField
+      id="outlined-select-currency"
+      select
+      label="Sort by" // Change the label here
+      defaultValue={defaultCategory}
+      fullWidth
+    >
+      {quizCategories.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+      </div>
+
+      <div style={{width:'20%'}}>
+      <TextField
+      id="outlined-select-currency"
+      select
+      label="Sort by" // Change the label here
+      defaultValue={defaultRating}
+      fullWidth
+    >
+      {ratingOptions.map((option) => (
+        <MenuItem key={option.value} value={option.value}>
+          {option.label}
+        </MenuItem>
+      ))}
+    </TextField>
+      </div>
+
+
+      </div>
+
+      {/* quiz lists cards */}
+
       {quizList.map((quiz, index) => (
         <div style={{width:'18%',marginBlock:'20px'}} key={index}>
              <Card sx={{ maxWidth: '100%' }}>
       <CardActionArea>
+        
       <CardMedia  
   component="img"
   height="140"
@@ -159,7 +274,12 @@ return(
 
         <CardContent style={{paddingBottom:'5px'}}>
             <div style={{display:'flex',flexDirection:'row'}}>
+              {quiz.reattempt === false ? (
                 <img style={{width:'30%'}} src={TimerDial} alt="" />
+              ):(
+                <img style={{width:'30%'}} src={GreenTimer} alt="" />
+              )}
+                
                 <div style={{width:'70%',paddingLeft:'5px'}}>
                     <h5 style={{marginBlock:'1px'}}>{quiz.quizName}</h5>
                     <h5 style={{marginBlock:'1px'}}>{quiz.numberOfQuestions} - Questions & {quiz.duration}</h5>
@@ -183,39 +303,32 @@ return(
                     <p style={{fontSize:'10px',paddingLeft:'2px'}}>{quiz.formattedDate}</p>
                 </span>
             </div>
-          {/* <Typography gutterBottom variant="h5" component="div">
-            {quiz.quizName}
-          </Typography>
-          <Typography style={{display:'flex',justifyContent:'space-between'}} variant="body2" color="text.secondary">
-            <span style={{display:'flex',alignItems:'center'}}>
-            <FileCopyIcon color="info" fontSize="small"/>
-            {quiz.numberOfQuestions}
-            </span>
-            <span style={{display:'flex',alignItems:'center'}}>
-            <TimerIcon  color="info" fontSize="small"/>
-            {quiz.duration}
-            </span>
-          </Typography> */}
         </CardContent>
       </CardActionArea>
       <CardActions>
-      <Button onClick={() => openQuizWindow(quiz.id)} style={{width:'100%',backgroundColor:'#1A6AE5',color:'white',borderRadius:'20px'}}>
+      {quiz.reattempt === false ? (<Button onClick={() => openQuizWindow(quiz.id)} endIcon={<ArrowForwardIcon />} style={{width:'100%',backgroundColor:'#1A6AE5',color:'white',borderRadius:'20px',textTransform:'capitalize'}}>
           Start Quiz
+        </Button>)
+        :(
+          <div style={{width:'100%',display:'flex',flexDirection:'row',justifyContent:'space-between'}}>
+            <Button onClick={() => openQuizWindow(quiz.id)} variant="outlined" color="success" endIcon={<ArrowForwardIcon />} style={{width:'48%',borderRadius:'20px',textTransform:'capitalize'}}>
+          Reattempt
         </Button>
+        <Button onClick={() => openQuizWindow(quiz.id)} style={{width:'48%',backgroundColor:'green',color:'white',borderRadius:'20px',textTransform:'capitalize'}}>
+          View Score
+        </Button>
+          </div>
+        )
+        }
+      
       </CardActions>
     </Card>
-          {/* <button onClick={() => openQuizWindow()}>
-            {quiz.quizName}
-          </button>
-          <p>Duration: {quiz.duration}</p>
-          <p>Date: {quiz.date}</p>
-          <p>Language: {quiz.language}</p>
-          <hr /> */}
         </div>
       ))}
       </div>
+
+      <Pagination style={{paddingTop:'10px'}} count={10} size="large" color="primary" />
     </div>
-    // <button onClick={openQuizWindow}>Route</button>
 )
 }
 export default Quizlist
